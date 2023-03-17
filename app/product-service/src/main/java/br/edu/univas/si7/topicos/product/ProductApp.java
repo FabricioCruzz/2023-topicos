@@ -22,7 +22,7 @@ public class ProductApp implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// implementar usando os próximos passos
 
-		ProductEntity p1 = new ProductEntity(1, "Arroz", 7.30f, true);
+		ProductEntity p1 = new ProductEntity(1, "Arroz", 7.30f, false);
 		repo.save(p1);
 		ProductEntity p2 = new ProductEntity(2, "Feijão", 2.45f, true);
 		repo.save(p2);
