@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ab3d24c-c101-451b-95be-9fd8785d79c3",
+		"_postman_id": "f4c7ea1c-ffd7-4981-b636-2f02cf60b773",
 		"name": "product-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -78,6 +78,34 @@
 					"path": [
 						"products",
 						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": 3,\r\n    \"name\": \"Produto01\",\r\n    \"price\": 3.30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
 					]
 				}
 			},
