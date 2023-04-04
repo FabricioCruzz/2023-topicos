@@ -2,27 +2,32 @@ package br.edu.univas.si7.topicos.product.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import br.edu.univas.si7.topicos.product.dto.ProductDTO;
 import br.edu.univas.si7.topicos.product.entities.ProductEntity;
 import br.edu.univas.si7.topicos.product.repository.ProductRepository;
+import br.edu.univas.si7.topicos.product.support.ProductException;
 
 public class ProductServiceTest {
 
-	private static ProductRepository repo = Mockito.mock(ProductRepository.class);
+	private static ProductRepository repo;
+	private ProductService service;
 	
-	private ProductService service = new ProductService(repo);
-	
-	@BeforeAll
-	public static void setup() {
+	@BeforeEach
+	public void setup() {
+		repo = Mockito.mock(ProductRepository.class);
+		service = new ProductService(repo);
+		
 		ProductEntity prod01 = new ProductEntity(1, "test", 0f, false);
 		Mockito.when(repo.findById(1)).thenReturn(Optional.of(prod01));
 		
@@ -44,5 +49,40 @@ public class ProductServiceTest {
 		ProductEntity product = service.findById(1);
 		assertNotNull(product);
 		assertEquals(1, product.getCode());
+	}
+	
+	@Test
+	void testSaveProduct() {
+		ProductEntity prod01 = new ProductEntity(1, "test", 0f, false);
+		Mockito.when(repo.save(Mockito.any(ProductEntity.class))).thenReturn(prod01);
+		
+		service.createProduct(new ProductDTO(prod01));
+		Mockito.verify(repo, Mockito.times(1)).save(Mockito.any());
+	}
+	
+	@Test
+	void testUpdateProduct() {
+		ProductEntity prod01 = new ProductEntity(1, "test", 0f, false);
+		Mockito.when(repo.save(Mockito.any(ProductEntity.class))).thenReturn(prod01);
+		
+		//create a product
+		service.createProduct(new ProductDTO(prod01));
+		prod01.setName("new_name");
+		
+		//update the name of the product
+		service.updateProduct(prod01, 1);
+
+		//verifies that the save(...) method has been called
+		Mockito.verify(repo, Mockito.times(2)).save(Mockito.any());
+		//verify findById
+		
+		//pesquisar sobre o ArgumentCaptor do Mockito para ter certeza que o update foi feito corretamente
+	}
+	
+	@Test
+	void testDeleteWithExcetion() {
+		Mockito.doThrow(DataIntegrityViolationException.class)
+			.when(repo).delete(Mockito.any(ProductEntity.class));
+		assertThrows(ProductException.class, () -> service.deleteProduct(1));
 	}
 }
