@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import br.edu.univas.si7.topicos.product.dto.ProductDTO;
 import br.edu.univas.si7.topicos.product.entities.ProductEntity;
 import br.edu.univas.si7.topicos.product.repository.ProductRepository;
+import br.edu.univas.si7.topicos.product.support.ObjectNotFoundException;
 import br.edu.univas.si7.topicos.product.support.ProductException;
 
 public class ProductServiceTest {
@@ -79,10 +80,31 @@ public class ProductServiceTest {
 		//pesquisar sobre o ArgumentCaptor do Mockito para ter certeza que o update foi feito corretamente
 	}
 	
+	//TODO: scenario: find active products with empty list
+	//TODO: scenario: find active products with non empty list
+	//TODO: scenario: update product with invalid data
+	//TODO: scenario: update product with non existing product
+	
+	@Test
+	void testDeleteSuccess() {
+		Mockito.doNothing().when(repo).delete(Mockito.any());
+		service.deleteProduct(1);
+	}
+	
+	@Test
+	void testDeleteWithCodeNull() {
+		assertThrows(ProductException.class, () -> service.deleteProduct(null));
+	}
+	
 	@Test
 	void testDeleteWithExcetion() {
 		Mockito.doThrow(DataIntegrityViolationException.class)
-			.when(repo).delete(Mockito.any(ProductEntity.class));
+			.when(repo).delete(Mockito.any());
 		assertThrows(ProductException.class, () -> service.deleteProduct(1));
+	}
+	
+	@Test
+	void testDeleteNonExistingProduct() {
+		assertThrows(ObjectNotFoundException.class, () -> service.deleteProduct(2));
 	}
 }
