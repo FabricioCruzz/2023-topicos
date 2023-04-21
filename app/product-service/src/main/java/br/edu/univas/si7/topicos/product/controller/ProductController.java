@@ -2,6 +2,8 @@ package br.edu.univas.si7.topicos.product.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,13 +47,13 @@ public class ProductController {
 
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createProduct(@RequestBody ProductDTO product) {
+	public void createProduct(@RequestBody @Valid ProductDTO product) {
 		service.createProduct(product);
 	}
 
 	@PutMapping("/{code}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateProduct(@RequestBody ProductDTO dto, @PathVariable Integer code) {
+	public void updateProduct(@RequestBody @Valid ProductDTO dto, @PathVariable Integer code) {
 		service.updateProduct(service.toEntity(dto), code);
 	}
 
