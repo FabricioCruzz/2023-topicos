@@ -1,5 +1,6 @@
 package br.edu.univas.si7.topicos.product.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.edu.univas.si7.topicos.product.dto.ProductDTO;
+import br.edu.univas.si7.topicos.product.entities.Category;
 import br.edu.univas.si7.topicos.product.entities.ProductEntity;
 import br.edu.univas.si7.topicos.product.repository.ProductRepository;
 import br.edu.univas.si7.topicos.product.support.ObjectNotFoundException;
@@ -37,9 +39,19 @@ public class ProductService {
 		ProductEntity entity = obj.orElseThrow(() -> new ObjectNotFoundException("Product " + code + " not found"));
 		return entity;
 	}
+	
+	public List<ProductDTO> findByCatName(String name) {
+		return repo.findAll().stream().filter(p -> p.getName() == name).map(p -> new ProductDTO(p)).collect(Collectors.toList());
+	}
 
 	public void createProduct(ProductDTO product) {
-		repo.save(toEntity(product));
+		if(product.getCategory() != null) {
+			repo.save(toEntity(product));			
+		}
+		// TODO: Verificar como lançar exceção
+		else {
+			throw new ObjectNotFoundException("Category not found!");
+		}
 	}
 
 	public ProductEntity toEntity(ProductDTO prod) {

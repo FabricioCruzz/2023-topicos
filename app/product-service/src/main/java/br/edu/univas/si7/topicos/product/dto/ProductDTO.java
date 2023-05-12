@@ -2,6 +2,8 @@ package br.edu.univas.si7.topicos.product.dto;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -9,6 +11,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.edu.univas.si7.topicos.product.entities.Category;
 import br.edu.univas.si7.topicos.product.entities.ProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +38,8 @@ public class ProductDTO {
 
 //  @NotNull(message = "Active can not be null.")
 //	private boolean active;
+	
+	private Category category;
 
 	public ProductDTO(ProductEntity product) {
 		this.code = product.getCode();
@@ -42,5 +47,6 @@ public class ProductDTO {
 		this.price = product.getPrice();
 		this.dateCreated = product.getCreatedAt();
 //		this.active = product.isActive();
+		this.category = product.getCategory();
 	}
 }

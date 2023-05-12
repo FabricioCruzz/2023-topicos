@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,10 @@ public class ProductEntity {
 	private String name;
 	private float price;
 	private boolean active;
+	
+	@ManyToOne
+	@JoinColumn(name="FK_ID_CAT")
+	private Category category;
 	
 	public ProductEntity(int code, String name, float price, boolean active) {
 		super();
