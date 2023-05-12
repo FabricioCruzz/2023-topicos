@@ -39,4 +39,13 @@ public class Category {
     
     @OneToMany(mappedBy = "category")
     private Set<ProductEntity> products;
+
+	public Category(String name, String family, String group) {
+		super();
+		this.name = name;
+		this.family = family;
+		this.group = group;
+	}
+    
+    
 }

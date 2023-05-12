@@ -10,8 +10,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.edu.univas.si7.topicos.product.dto.ProductDTO;
+import br.edu.univas.si7.topicos.product.dto.ProductDTONew;
 import br.edu.univas.si7.topicos.product.entities.Category;
 import br.edu.univas.si7.topicos.product.entities.ProductEntity;
+import br.edu.univas.si7.topicos.product.repository.CategoryRepository;
 import br.edu.univas.si7.topicos.product.repository.ProductRepository;
 import br.edu.univas.si7.topicos.product.support.ObjectNotFoundException;
 import br.edu.univas.si7.topicos.product.support.ProductException;
@@ -20,12 +22,13 @@ import br.edu.univas.si7.topicos.product.support.ProductException;
 public class ProductService {
 
 	private ProductRepository repo;
+	private CategoryRepository repoCat;
 
 	@Autowired
 	public ProductService(ProductRepository repo) {
 		this.repo = repo;
 	}
-
+	
 	public List<ProductDTO> findAll() {
 		return repo.findAll().stream().map(p -> new ProductDTO(p)).collect(Collectors.toList());
 	}
@@ -40,22 +43,28 @@ public class ProductService {
 		return entity;
 	}
 	
-	public List<ProductDTO> findByCatName(String name) {
-		return repo.findAll().stream().filter(p -> p.getName() == name).map(p -> new ProductDTO(p)).collect(Collectors.toList());
+	public boolean findByCatName(String nameCat) {
+		return repoCat.findByNameCat(nameCat);
+	}
+	
+	public List<ProductDTO> findProdByCatName(String name) {
+		return repo.findAll().stream().filter(p -> p.getName() == name).map(p -> new ProductDTO(p)).collect(Collectors.toList()); 
 	}
 
-	public void createProduct(ProductDTO product) {
-		if(product.getCategory() != null) {
-			repo.save(toEntity(product));			
+	public void createProduct(ProductDTONew product) {
+		if(findByCatName(product.getNameCat())) {//true
+			repo.save(toEntity(product));
 		}
 		// TODO: Verificar como lançar exceção
-		else {
-			throw new ObjectNotFoundException("Category not found!");
+		else {//false
+			Category category = new Category(product.getNameCat(), product.getFamily(), product.getGroup()); 
+			repoCat.save(category);
 		}
 	}
-
-	public ProductEntity toEntity(ProductDTO prod) {
-		return new ProductEntity(prod.getCode(), prod.getName(), prod.getPrice(), true);
+	
+	public ProductEntity toEntity(ProductDTONew prodNew) {
+		Category cat = new Category(prodNew.getNameCat(), prodNew.getFamily(), prodNew.getGroup());
+		return new ProductEntity(prodNew.getCode(), prodNew.getName(), prodNew.getPrice(), true, cat);
 	}
 
 	public void updateProduct(ProductEntity product, Integer code) {

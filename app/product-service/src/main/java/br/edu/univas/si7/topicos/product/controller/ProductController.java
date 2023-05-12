@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.univas.si7.topicos.product.dto.ProductDTO;
+import br.edu.univas.si7.topicos.product.dto.ProductDTONew;
 import br.edu.univas.si7.topicos.product.service.ProductService;
 
 @RestController
@@ -47,7 +48,7 @@ public class ProductController {
 
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createProduct(@RequestBody @Valid ProductDTO product) {
+	public void createProduct(@RequestBody @Valid ProductDTONew product) {
 		service.createProduct(product);
 	}
 

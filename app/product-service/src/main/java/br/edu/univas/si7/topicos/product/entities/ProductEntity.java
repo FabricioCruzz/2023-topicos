@@ -28,13 +28,14 @@ public class ProductEntity {
 	@JoinColumn(name="FK_ID_CAT")
 	private Category category;
 	
-	public ProductEntity(int code, String name, float price, boolean active) {
+	public ProductEntity(int code, String name, float price, boolean active, Category category) {
 		super();
 		this.code = code;
 		this.name = name;
 		this.price = price;
 		this.active = active;
 		this.createdAt = LocalDateTime.now();
+		this.category = category;
 	}
 
 	@Setter(AccessLevel.NONE)
