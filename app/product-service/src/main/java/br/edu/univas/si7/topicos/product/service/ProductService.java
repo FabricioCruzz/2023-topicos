@@ -43,19 +43,20 @@ public class ProductService {
 		return entity;
 	}
 	
-	public boolean findByCatName(String nameCat) {
-		return repoCat.findByNameCat(nameCat);
+	public Boolean findByCatName(String nameCat) {
+		return repoCat.findByName(nameCat);
 	}
 	
 	public List<ProductDTO> findProdByCatName(String name) {
-		return repo.findAll().stream().filter(p -> p.getName() == name).map(p -> new ProductDTO(p)).collect(Collectors.toList()); 
+		return repo.findAll().stream()
+				.filter(p -> p.getCategory().getName().equals(name))
+				.map(p -> new ProductDTO(p)).collect(Collectors.toList()); 
 	}
 
 	public void createProduct(ProductDTONew product) {
 		if(findByCatName(product.getNameCat())) {//true
 			repo.save(toEntity(product));
 		}
-		// TODO: Verificar como lançar exceção
 		else {//false
 			Category category = new Category(product.getNameCat(), product.getFamily(), product.getGroup()); 
 			repoCat.save(category);

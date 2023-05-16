@@ -7,5 +7,5 @@ import br.edu.univas.si7.topicos.product.entities.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-	public boolean findByNameCat(String nameCat);
+	public Boolean findByName(String nameCat);
 }

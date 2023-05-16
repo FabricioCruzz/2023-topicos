@@ -45,7 +45,13 @@ public class ProductController {
 	public List<ProductDTO> getAllProductsActive() {
 		return service.findAllActive();
 	}
-
+	
+	@GetMapping("/category/{name}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<ProductDTO> getAllProductsByCategoy(@PathVariable String name) {
+		return service.findProdByCatName(name);
+	}
+	
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createProduct(@RequestBody @Valid ProductDTONew product) {
@@ -54,8 +60,8 @@ public class ProductController {
 
 	@PutMapping("/{code}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateProduct(@RequestBody @Valid ProductDTO dto, @PathVariable Integer code) {
-		service.updateProduct(service.toEntity(dto), code);
+	public void updateProduct(@RequestBody @Valid ProductDTONew dtoNew, @PathVariable Integer code) {
+		service.updateProduct(service.toEntity(dtoNew), code);
 	}
 
 	@DeleteMapping("/{code}")

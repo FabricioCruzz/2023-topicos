@@ -10,13 +10,13 @@ import br.edu.univas.si7.topicos.product.entities.ProductEntity;
 @RequestMapping("/hello")
 public class HelloController {
 
-	@GetMapping("/v1")
-	public String hello() {
-		return "Hello v1!";
-	}
-
-	@GetMapping("/v3")
-	public ProductEntity helloProduct() {
-		return new ProductEntity(1, "Product v3", 2.45f, true);
-	}
+//	@GetMapping("/v1")
+//	public String hello() {
+//		return "Hello v1!";
+//	}
+//
+//	@GetMapping("/v3")
+//	public ProductEntity helloProduct() {
+//		return new ProductEntity(1, "Product v3", 2.45f, true);
+//	}
 }
