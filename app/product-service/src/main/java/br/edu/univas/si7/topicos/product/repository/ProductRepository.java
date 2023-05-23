@@ -12,7 +12,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 	
 	public List<ProductEntity>findByActive(Boolean active);
 	
-	//TODO: Como criar o findByCategoryName
-	// Pesquisar como fazer
-	
 }

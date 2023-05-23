@@ -28,7 +28,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "NOME")
+//    @Column(name = "NOME")
     private String name;
 
     @Column(name = "FAMILIA")

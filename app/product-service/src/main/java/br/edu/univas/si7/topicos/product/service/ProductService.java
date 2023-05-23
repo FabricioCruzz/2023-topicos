@@ -25,8 +25,9 @@ public class ProductService {
 	private CategoryRepository repoCat;
 
 	@Autowired
-	public ProductService(ProductRepository repo) {
+	public ProductService(ProductRepository repo, CategoryRepository repoCat) {
 		this.repo = repo;
+		this.repoCat = repoCat;
 	}
 	
 	public List<ProductDTO> findAll() {
@@ -54,6 +55,7 @@ public class ProductService {
 	}
 
 	public void createProduct(ProductDTONew product) {
+		System.out.println(repoCat);
 		if(findByCatName(product.getNameCat())) {//true
 			repo.save(toEntity(product));
 		}
